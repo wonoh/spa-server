@@ -22,3 +22,7 @@ spring:
       hibernate:
         temp:
           use_jdbc_metadata_defaults: false
+wonoh:
+  app:
+    jwtSecret: myjwtsecretkey
+    jwtExpiration: 86400

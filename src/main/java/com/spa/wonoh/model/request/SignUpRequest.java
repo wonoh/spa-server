@@ -2,7 +2,6 @@ package com.spa.wonoh.model.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NegativeOrZero;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 

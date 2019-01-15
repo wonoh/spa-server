@@ -2,7 +2,6 @@ package com.spa.wonoh.security.jwt;
 
 import com.spa.wonoh.security.MemberPrinciple;
 import io.jsonwebtoken.*;
-import lombok.Value;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
@@ -16,13 +15,13 @@ public class JwtProvider {
 
     private static final Logger logger = LogManager.getLogger(JwtAuthTokenFilter.class);
 
-    private final String jwtSecret = "mySecretKey";
+    private final String JWT_SECRET = "mySecretKey";
 
-    private int jwtExpiration = 86400;
+    private final int JWT_EXPIRATION = 86400;
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature -> Message: {} ", e);
@@ -43,13 +42,13 @@ public class JwtProvider {
         return Jwts.builder()
                             .setSubject((memberPrinciple.getEmail()))
                             .setIssuedAt(new Date())
-                            .setExpiration(new Date((new Date().getTime()+jwtExpiration)))
-                            .signWith(SignatureAlgorithm.HS512,jwtSecret)
+                            .setExpiration(new Date((new Date().getTime()+JWT_EXPIRATION)))
+                            .signWith(SignatureAlgorithm.HS512,JWT_SECRET)
                             .compact();
     }
     public String getEmailFromJwtToken(String token) {
         return Jwts.parser()
-                            .setSigningKey(jwtSecret)
+                            .setSigningKey(JWT_SECRET)
                             .parseClaimsJws(token)
                             .getBody().getSubject();
     }

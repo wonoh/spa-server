@@ -22,11 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailService)
-                .passwordEncoder(passwordEncoder());
-    }
+    @Autowired
+    CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private JwtAuthEntryPoint unauthorizedHandler;
 
     @Bean
     @Override
@@ -35,8 +35,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public JwtAuthTokenFilter authenticationJwtTokenFilter(){
+        return new JwtAuthTokenFilter();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -52,15 +63,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Autowired
-    CustomUserDetailService customUserDetailService;
-
-    @Autowired
-    private JwtAuthEntryPoint unauthorizedHandler;
-
-    @Bean
-    public JwtAuthTokenFilter authenticationJwtTokenFilter(){
-        return new JwtAuthTokenFilter();
-    }
 
 }

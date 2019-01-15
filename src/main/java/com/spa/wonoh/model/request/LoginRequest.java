@@ -1,7 +1,6 @@
 package com.spa.wonoh.model.request;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,6 +10,4 @@ public class LoginRequest {
     private String email;
     @NotBlank
     private String password;
-
-
 }
